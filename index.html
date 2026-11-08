@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!--
+    功能名称: 高级网页设计课堂实践目录
+    作者: 冯玺成
+    建立时间: 2026-11-05 14:53
+    使用模型: Kimi-K3
+    功能简介: 汇总课堂网页练习与本地 Swiper 示例，提供分类导航
+-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -242,6 +249,47 @@
             width: fit-content;
         }
 
+        .fxc_swiper-summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .fxc_swiper-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .fxc_swiper-summary::after {
+            color: var(--coral);
+            content: "+";
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        .fxc_swiper-details[open] .fxc_swiper-summary::after {
+            content: "−";
+        }
+
+        .fxc_swiper-links {
+            display: grid;
+            gap: 8px 18px;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            padding: 8px 0 18px;
+        }
+
+        .fxc_swiper-link {
+            border-bottom: 1px solid var(--line);
+            color: var(--blue);
+            font-size: 13px;
+            overflow-wrap: anywhere;
+            padding: 8px 4px;
+        }
+
+        .fxc_swiper-link:hover,
+        .fxc_swiper-link:focus-visible {
+            background: var(--card);
+            color: var(--coral-dark);
+        }
+
         .prompt-section {
             border-top: 1px solid var(--line);
             margin-top: 76px;
@@ -334,7 +382,7 @@
             <section aria-labelledby="directory-title">
                 <div class="directory-heading">
                     <h2 id="directory-title">课堂目录</h2>
-                    <span>已收录 24 个页面</span>
+                    <span>已收录 76 个网页 · 1 项待添加</span>
                 </div>
 
                 <div class="fxc_section">
@@ -355,6 +403,13 @@
                             <h3>HTML 基础练习二</h3>
                             <p>同一系列的第二份标签练习，可对照两份写法差异。</p>
                             <a class="course-link" href="./html_basic_css">打开课堂实践</a>
+                        </article>
+
+                        <article class="course-card is-coming">
+                            <span class="course-number">03</span>
+                            <h3>自我介绍网页</h3>
+                            <p>个人信息与兴趣展示页面，将在后续课堂实践中加入。</p>
+                            <span class="status">后续添加</span>
                         </article>
 
                         <article class="course-card">
@@ -542,8 +597,75 @@
                             <p>SVG 版本的对照页，与字体版本逐项比对。</p>
                             <a class="course-link" href="./my2/fcx-tomato-svg.html">打开课堂实践</a>
                         </article>
+
+                        <article class="course-card">
+                            <span class="course-number">25</span>
+                            <h3>Swiper 课堂任务</h3>
+                            <p>Swiper 轮播组件的课堂实践页面。</p>
+                            <a class="course-link" href="./swiper-task.html">打开课堂实践</a>
+                        </article>
                     </div>
                 </div>
+
+                <details class="fxc_section fxc_swiper-details">
+                    <summary class="directory-heading fxc_swiper-summary">
+                        <h2>Swiper 示例页面</h2>
+                        <span>50 个本地示例</span>
+                    </summary>
+                    <nav class="fxc_swiper-links" aria-label="Swiper 示例页面">
+                        <a class="fxc_swiper-link" href="./swiper/demo/010-default.html">010-default.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/020-navigation.html">020-navigation.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/030-pagination.html">030-pagination.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/040-pagination-dynamic.html">040-pagination-dynamic.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/050-pagination-progress.html">050-pagination-progress.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/060-pagination-fraction.html">060-pagination-fraction.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/070-pagination-custom.html">070-pagination-custom.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/080-scrollbar.html">080-scrollbar.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/090-vertical.html">090-vertical.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/100-space-between.html">100-space-between.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/110-slides-per-view.html">110-slides-per-view.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/120-slides-per-view-auto.html">120-slides-per-view-auto.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/130-centered.html">130-centered.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/140-centered-auto.html">140-centered-auto.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/145-css-mode.html">145-css-mode.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/150-freemode.html">150-freemode.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/160-scroll-container.html">160-scroll-container.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/170-grid.html">170-grid.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/180-nested.html">180-nested.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/190-grab-cursor.html">190-grab-cursor.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/200-infinite-loop.html">200-infinite-loop.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/211-slides-per-group-skip.html">211-slides-per-group-skip.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/220-effect-fade.html">220-effect-fade.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/230-effect-cube.html">230-effect-cube.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/240-effect-coverflow.html">240-effect-coverflow.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/250-effect-flip.html">250-effect-flip.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/255-effect-cards.html">255-effect-cards.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/257-effect-creative.html">257-effect-creative.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/260-keyboard-control.html">260-keyboard-control.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/270-mousewheel-control.html">270-mousewheel-control.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/280-autoplay.html">280-autoplay.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/285-autoplay-progress.html">285-autoplay-progress.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/290-manipulation.html">290-manipulation.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/300-thumbs-gallery.html">300-thumbs-gallery.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/310-thumbs-gallery-loop.html">310-thumbs-gallery-loop.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/320-multiple-swipers.html">320-multiple-swipers.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/330-hash-navigation.html">330-hash-navigation.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/340-history.html">340-history.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/350-rtl.html">350-rtl.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/360-parallax.html">360-parallax.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/370-lazy-load-images.html">370-lazy-load-images.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/380-responsive-breakpoints.html">380-responsive-breakpoints.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/381-ratio-breakpoints.html">381-ratio-breakpoints.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/390-autoheight.html">390-autoheight.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/400-zoom.html">400-zoom.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/410-virtual-slides.html">410-virtual-slides.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/420-custom-plugin.html">420-custom-plugin.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/430-slideable-menu.html">430-slideable-menu.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/440-change-direction.html">440-change-direction.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/450-watch-slides-visibility.html">450-watch-slides-visibility.html</a>
+                        <a class="fxc_swiper-link" href="./swiper/demo/500-rewind.html">500-rewind.html</a>
+                    </nav>
+                </details>
             </section>
 
             <section class="prompt-section" aria-labelledby="prompt-title">

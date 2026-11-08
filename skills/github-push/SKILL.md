@@ -23,8 +23,8 @@ description: 当用户要求将项目提交并推送到 GitHub 时触发。处�
 ## 多远端约定（本项目）
 
 - `origin` 指向 Gitee：`https://gitee.com/feng-xicheng/fxc403.git`
-- GitHub 仓库：`666619/fengxichang403`、`666619/fengxichang`、`666619/403fengxichang` 按任务单独指定，推送用临时 URL 或独立 remote，不覆盖 `origin`
-- 推送命令示例：`git push git@ssh.github.com:666619/403fengxichang.git master`
+- GitHub 仓库：`666619/fengxichang403`、`666619/fengxichang`、`666619/403fengxichang`、`666619/fxc403` 按任务单独指定，推送用临时 URL 或独立 remote，不覆盖 `origin`
+- 推送命令示例：`git push git@ssh.github.com:666619/fxc403.git master`
 - 推送后必须用 `git ls-remote` 校验远端 hash 与本地一致，作为交付凭证
 
 ## 推送规范（PowerShell 环境）
