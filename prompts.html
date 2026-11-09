@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 提示词记录 · Swiper 大国重器光影展</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{overflow-x:hidden}
+  body{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:#f6f8fc;color:#1f2937;line-height:1.9}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 20px 60px}
+  .head{background:linear-gradient(135deg,#0f2b5b,#1d5bbf);border-radius:20px;padding:32px 34px;color:#fff;margin-bottom:24px}
+  .head h1{font-size:26px;letter-spacing:1px}
+  .head p{margin-top:10px;font-size:14px;color:#d9e3f5}
+  .head .meta{margin-top:14px;font-size:13px;color:#ffd166}
+  .card{background:#fff;border-radius:16px;padding:26px 28px;margin-bottom:22px;border:1px solid #e8ecf5;box-shadow:0 4px 14px rgba(31,41,55,.06);overflow:hidden}
+  .card h2{font-size:19px;color:#0f2b5b;margin-bottom:6px}
+  .card .tag{display:inline-block;font-size:12.5px;background:#eef4ff;color:#1d4ed8;border:1px solid #c7d8f8;border-radius:999px;padding:3px 12px;margin-bottom:14px}
+  .q{background:#f0f7ff;border-left:4px solid #1d5bbf;border-radius:8px;padding:14px 18px;margin:14px 0}
+  .q .who{font-size:12.5px;color:#1d5bbf;font-weight:bold;margin-bottom:6px}
+  .a{background:#fafafa;border-left:4px solid #9ca3af;border-radius:8px;padding:14px 18px;margin:14px 0}
+  .a .who{font-size:12.5px;color:#6b7280;font-weight:bold;margin-bottom:6px}
+  pre{background:#0f2b5b;color:#d9e3f5;border-radius:10px;padding:14px 16px;overflow-x:auto;max-width:100%;font-family:Consolas,monospace;font-size:13px;line-height:1.7;margin:10px 0}
+  .bad{background:#fff1f2;border-left:4px solid #e11d48;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px;color:#9f1239}
+  .good{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px;color:#166534}
+  .note{background:#fffbea;border-left:4px solid #e8890c;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px;color:#7c5e10}
+
+  /* ======= 演示区 ======= */
+  .demo-box{border:1.5px dashed #c7d8f8;border-radius:14px;padding:16px;margin:16px 0 4px;background:#fbfcff}
+  .demo-box .demo-title{font-size:14px;color:#0f2b5b;font-weight:bold;margin-bottom:4px}
+  .demo-box .demo-sub{font-size:12.5px;color:#6b7280;margin-bottom:14px}
+
+  /* 上下两块全宽演示面板（不用 Grid，避免列被 Swiper 撑爆） */
+  .run-panel{border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid #e8ecf5}
+  .bad-panel{background:#fff8f8;border-color:#fecaca}
+  .good-panel{background:#f4fff7;border-color:#bbf7d0}
+  .wall-panel{background:#f8f8ff;border-color:#d8d8f8}
+  .wall-panel2{background:#fffdf5;border-color:#fde68a}
+  .run-panel h4{font-size:14.5px;margin-bottom:4px}
+  .bad-panel h4{color:#9f1239}
+  .good-panel h4{color:#166534}
+  .wall-panel h4{color:#1d4ed8}
+  .wall-panel2 h4{color:#b45309}
+  .run-panel .sub{font-size:12px;color:#6b7280;margin-bottom:10px}
+
+  /* 轮播容器：固定宽高，绝不塌陷 */
+  .mini{position:relative;width:100%;max-width:720px;height:220px;margin:0 auto;border-radius:10px;overflow:hidden;background:#0f2b5b}
+  .mini .swiper-slide{position:relative;height:220px;overflow:hidden}
+  .mini .swiper-slide img{position:relative;width:100%;height:220px;object-fit:cover;display:block}
+  .mini .mtxt{
+    position:absolute;left:0;right:0;bottom:0;padding:30px 14px 10px;
+    background:linear-gradient(transparent,rgba(5,15,35,.85));
+    color:#fff;font-size:15px;font-weight:bold;letter-spacing:1px;text-align:center;
+  }
+
+  .wall{position:relative;width:100%;max-width:720px;height:240px;margin:0 auto;border-radius:12px;overflow:hidden;background:#0f2b5b}
+  .wall .swiper-slide{position:relative;height:240px;overflow:hidden}
+  .wall .swiper-slide img{position:relative;width:100%;height:240px;object-fit:cover;display:block}
+  .wall .mtxt{
+    position:absolute;left:0;right:0;bottom:0;padding:34px 14px 12px;
+    background:linear-gradient(transparent,rgba(5,15,35,.85));
+    color:#fff;font-size:16px;font-weight:bold;letter-spacing:1px;text-align:center;
+  }
+  .wall .swiper-pagination-bullet{background:#fff;opacity:.5}
+  .wall .swiper-pagination-bullet-active{background:#e8890c;opacity:1;width:18px;border-radius:6px}
+
+  .kb{position:relative;width:100%;max-width:720px;height:200px;margin:0 auto;border-radius:10px;overflow:hidden;background:#0f2b5b;outline:none}
+  .kb:focus{box-shadow:0 0 0 3px rgba(232,137,12,.55)}
+  .kb .swiper-slide{position:relative;height:200px;overflow:hidden}
+  .kb .swiper-slide img{position:relative;width:100%;height:200px;object-fit:cover;display:block}
+  .kb .mtxt{
+    position:absolute;left:0;right:0;bottom:0;padding:28px 14px 10px;
+    background:linear-gradient(transparent,rgba(5,15,35,.85));
+    color:#fff;font-size:15px;font-weight:bold;letter-spacing:1px;text-align:center;
+  }
+  .kb .swiper-pagination-bullet{background:#fff;opacity:.45}
+  .kb .swiper-pagination-bullet-active{background:#e8890c;opacity:1;width:20px;border-radius:6px}
+
+  /* 计数 / 进度条 */
+  .stat{font-size:13px;color:#374151;margin:10px auto 0;max-width:720px}
+  .stat b{font-size:14.5px}
+  .bad-panel .stat b{color:#9f1239}
+  .good-panel .stat b{color:#166534}
+  .bar{height:6px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:8px auto 0;max-width:720px}
+  .bar i{display:block;height:100%;width:0;background:#1d5bbf}
+  .bad-panel .bar i{background:#e11d48}
+  .good-panel .bar i{background:#16a34a}
+
+  .flags{margin:12px auto 0;max-width:720px;font-size:12.5px;padding-left:0;list-style:none}
+  .flags li{margin:4px 0}
+  .flags li.no{color:#9f1239}
+  .flags li.no::before{content:"✗ ";font-weight:bold}
+  .flags li.ok{color:#166534}
+  .flags li.ok::before{content:"✓ ";font-weight:bold}
+
+  .deg-tip{font-size:12.5px;color:#7c5e10;background:#fffbea;border-radius:8px;padding:8px 12px;margin:12px auto 0;max-width:720px;text-align:center}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+  th,td{border:1px solid #e5e7eb;padding:9px 12px;text-align:left}
+  th{background:#f0f7ff;color:#0f2b5b}
+  td.old{color:#9f1239;background:#fff8f8}
+  td.new{color:#166534;background:#f4fff7;font-weight:bold}
+
+  .back{text-align:center;margin-top:30px}
+  .back a{display:inline-block;text-decoration:none;color:#0f2b5b;font-weight:bold;background:#fff;border:1px solid #dbe4ff;border-radius:999px;padding:10px 26px}
+  footer{text-align:center;margin-top:30px;color:#9ca3af;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>🤖 AI 协作 · 提示词记录存档</h1>
+    <p>本页为「Swiper 轮播组件 · 大国重器光影展」三项课后作业的完整 AI 提示词往返记录，每项任务都附提示词前后变化的实机演示，可直接在浏览器里看到差别。</p>
+    <div class="meta">姓名：冯玺成　学号：24001010403　班级：24004　日期：2026-11-09</div>
+  </div>
+
+  <div id="cdnWarn" style="display:none;background:#fff1f2;border-left:4px solid #e11d48;padding:12px 16px;border-radius:8px;margin-bottom:20px;color:#9f1239;font-size:13.5px">
+    ⚠️ Swiper CDN 未加载成功，请连网后刷新本页，才能看到下面的对比演示。
+  </div>
+
+  <!-- ══════════════ 任务一 ══════════════ -->
+  <div class="card">
+    <span class="tag">任务一 · 提示词工程师 ⭐⭐</span>
+    <h2>让 AI 生成 new Swiper('#wySw4', {...})</h2>
+    <p>需求：① 无缝循环 ② 3.2 秒自动翻页且手动操作后不停止 ③ 圆点分页器可点击 ④ 初始效果为 cube。</p>
+
+    <div class="q">
+      <div class="who">第 1 轮提示词</div>
+      帮我写一段 Swiper11 的初始化代码，选择器是 #wySw4，要开启循环，自动播放，带可以点击的圆点分页器。
+    </div>
+
+    <div class="a">
+      <div class="who">AI 第 1 轮回答</div>
+<pre>var swiper4 = new Swiper('#wySw4', {
+  loop: true,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true
+  },
+  pagination: {
+    el: '#wySw4 .swiper-pagination',
+    clickable: true,
+    bulletClass: 'fxc_bullet'
+  },
+  speed: 600
+});</pre>
+    </div>
+
+    <div class="bad">
+      <b>验证结果（❌ 不通过）</b><br>
+      ① 缺少 <code>effect:'cube'</code>，第 4 条需求未实现；<br>
+      ② <code>delay</code> 为 3000，不是要求的 3200；<br>
+      ③ 分页器绑定 <code>#wySw4 .swiper-pagination</code>，不是指定的 <code>#wyPag4</code>，且擅自加 <code>bulletClass</code> 会覆盖页面圆点样式；<br>
+      ④ 多出 <code>pauseOnMouseEnter:true</code>，鼠标悬停会暂停，与自动翻页要求冲突。
+    </div>
+
+    <div class="q">
+      <div class="who">第 2 轮提示词</div>
+      写 Swiper11 初始化代码，选择器 #wySw4，变量名必须是 var swiper4，严格满足 4 点：<br>
+      1. loop:true 无缝循环；<br>
+      2. autoplay 延时必须 3200 毫秒，并设置 disableOnInteraction:false，手动滑动后自动播放继续；<br>
+      3. pagination 绑定 el:'#wyPag4'、clickable:true，不要自定义 bulletClass；<br>
+      4. effect 设为 'cube' 作为初始效果。<br>
+      禁止添加任何额外参数，只返回 JS 配置代码，不要返回 HTML 骨架。
+    </div>
+
+    <div class="a">
+      <div class="who">AI 第 2 轮回答</div>
+<pre>var swiper4 = new Swiper('#wySw4', {
+  loop: true,
+  effect: 'cube',
+  speed: 800,
+  autoplay: {
+    delay: 3200,
+    disableOnInteraction: false
+  },
+  pagination: {
+    el: '#wyPag4',
+    clickable: true
+  }
+});</pre>
+    </div>
+
+    <div class="good">
+      <b>一句话验证结论（✅ 通过）</b><br>
+      粘贴进页面后：循环、3.2 秒自动翻页、拖动后继续播放、圆点可点击、初始为 cube 立方体效果，四项需求全部生效。
+    </div>
+
+    <!-- ===== 任务一：两轮效果，上下两块全宽同时运行 ===== -->
+    <div class="demo-box">
+      <div class="demo-title">📊 两轮结果实机对比（同一组图片，上面跑第 1 轮代码，下面跑第 2 轮代码）</div>
+      <div class="demo-sub">两个轮播没有同步：上面 3.0 秒一翻、下面 3.2 秒一翻，看一会儿就能看出上面先翻、下面慢半拍；下面是 3D 立方体，上面只是平推。</div>
+
+      <!-- 第 1 轮 -->
+      <div class="run-panel bad-panel">
+        <h4>❌ 第 1 轮代码的运行结果</h4>
+        <div class="sub">delay 3000 · 无 effect（默认 slide）· bulletClass 覆盖</div>
+        <div class="swiper mini" id="demoA">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f2b5b,#1d5bbf)"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站" onerror="this.style.display='none'"><div class="mtxt">天宫空间站</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#12507a,#2b8fb3)"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组" onerror="this.style.display='none'"><div class="mtxt">复兴号动车组</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#4c2b8a,#7c4ddb)"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机" onerror="this.style.display='none'"><div class="mtxt">C919 大飞机</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#8a4b12,#e8890c)"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号" onerror="this.style.display='none'"><div class="mtxt">奋斗者号</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f5750,#16a34a)"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼" onerror="this.style.display='none'"><div class="mtxt">中国天眼 FAST</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0b2545,#1b4f8a)"><img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号" onerror="this.style.display='none'"><div class="mtxt">爱达·魔都号</div></div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="stat">已翻页 <b id="cntA">0</b> 次　本张剩余 <b id="remA">3.0</b> 秒</div>
+        <div class="bar"><i id="barA"></i></div>
+        <ul class="flags">
+          <li class="no">效果是 slide 平推（没有 effect）</li>
+          <li class="no">停留 3.0 秒，比下面快 0.2 秒</li>
+          <li class="no">底部圆点根本看不见（类名被覆盖）</li>
+          <li class="no">鼠标移上去进度条会冻住（暂停了）</li>
+        </ul>
+      </div>
+
+      <!-- 第 2 轮 -->
+      <div class="run-panel good-panel">
+        <h4>✅ 第 2 轮代码的运行结果</h4>
+        <div class="sub">delay 3200 · effect: 'cube' · 分页器 #wyPag4</div>
+        <div class="swiper mini" id="demoB">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f2b5b,#1d5bbf)"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站" onerror="this.style.display='none'"><div class="mtxt">天宫空间站</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#12507a,#2b8fb3)"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组" onerror="this.style.display='none'"><div class="mtxt">复兴号动车组</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#4c2b8a,#7c4ddb)"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机" onerror="this.style.display='none'"><div class="mtxt">C919 大飞机</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#8a4b12,#e8890c)"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号" onerror="this.style.display='none'"><div class="mtxt">奋斗者号</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f5750,#16a34a)"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼" onerror="this.style.display='none'"><div class="mtxt">中国天眼 FAST</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0b2545,#1b4f8a)"><img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号" onerror="this.style.display='none'"><div class="mtxt">爱达·魔都号</div></div>
+          </div>
+          <div class="swiper-pagination" id="demoBPag"></div>
+        </div>
+        <div class="stat">已翻页 <b id="cntB">0</b> 次　本张剩余 <b id="remB">3.2</b> 秒</div>
+        <div class="bar"><i id="barB"></i></div>
+        <ul class="flags">
+          <li class="ok">效果是 cube 3D 立方体翻转</li>
+          <li class="ok">停留 3.2 秒，与需求完全一致</li>
+          <li class="ok">底部圆点正常显示，可以点着跳</li>
+          <li class="ok">鼠标悬停不停，拖动后继续播放</li>
+        </ul>
+      </div>
+
+      <table>
+        <tr><th>对比项</th><th>第 1 轮 AI 给的</th><th>第 2 轮修正后</th></tr>
+        <tr><td>切换效果</td><td class="old">没写 effect → 默认 slide 平推</td><td class="new">effect: 'cube' 3D 立方体</td></tr>
+        <tr><td>停留时长</td><td class="old">delay: 3000（3.0 秒）</td><td class="new">delay: 3200（3.2 秒）</td></tr>
+        <tr><td>分页器绑定</td><td class="old">.swiper-pagination + bulletClass</td><td class="new">el: '#wyPag4'，可点击</td></tr>
+        <tr><td>圆点显示</td><td class="old">类名被覆盖，圆点不可见</td><td class="new">默认样式，橙色长条正常</td></tr>
+        <tr><td>鼠标悬停</td><td class="old">pauseOnMouseEnter:true → 暂停</td><td class="new">无此参数 → 继续翻页</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════ 任务二 ══════════════ -->
+  <div class="card">
+    <span class="tag">任务二 · creative 仿写 ⭐⭐⭐</span>
+    <h2>自学第 7 种效果：creative 电影墙</h2>
+    <p>参考官方示例 <code>swiper/demo/257-effect-creative.html</code>，配合 AI 读懂 <code>creativeEffect</code> 的 transform 写法。</p>
+
+    <div class="q">
+      <div class="who">我的提问</div>
+      我在 Swiper11 里想加第 7 种效果 creative，参考官方示例 257-effect-creative。请问 creativeEffect 里的 prev 和 next 分别控制什么？transform 里的百分号是相对谁的？给我一个"上一张缩小左移带角度、下一张放大右移进场"的配置例子。
+    </div>
+
+    <div class="a">
+      <div class="who">AI 回答</div>
+      <code>prev</code> 控制<b>正在滑出屏幕的上一张幻灯片</b>的变换样式；<code>next</code> 控制<b>即将滑入屏幕的下一张幻灯片</b>的变换样式。<br>
+      <code>translate</code> 三个值依次是 X（左右）、Y（上下）、Z（前后纵深）轴位移；<code>rotate</code> 是绕轴旋转角度；<code>scale</code> 是缩放倍数。<br>
+      <b>百分号是相对于当前 slide 自身的宽度</b>计算，<code>-120%</code> 即向左移动 1.2 个自身宽度。
+<pre>creativeEffect: {
+  prev: { translate: ['-120%', 0, -250], rotate: [0, 0, -12], scale: 0.7 },
+  next: { translate: ['120%', 0, -250], rotate: [0, 0, 12], scale: 1.15 }
+}</pre>
+    </div>
+
+    <div class="q">
+      <div class="who">我的追问</div>
+      如果想让卡片转 20 度，应该改哪个值？
+    </div>
+
+    <div class="a">
+      <div class="who">AI 回答</div>
+      改 <code>rotate</code> 数组里对应轴的数值。比如 <code>rotate: [0, 0, -20]</code> 是绕 Z 轴（屏幕法线）转 20 度，<code>rotate: [0, 20, 0]</code> 是绕 Y 轴左右翻转 20 度。prev 与 next 角度方向要相反，才有对向翻动的选片墙效果。
+    </div>
+
+    <div class="note">
+      <b>我用自己的话写下（prev / next 各控制什么）</b><br>
+      • <b>prev</b>：控制<b>离开屏幕的上一张</b>——缩小、左移、带角度退场，像电影墙里被挑走的海报；<br>
+      • <b>next</b>：控制<b>从右侧进场的下一张</b>——放大、右移、带反向角度进入，形成立体错落感；<br>
+      • transform 中的 <b>%</b> 是相对 <b>slide 自身宽度</b>，不是相对浏览器窗口。
+    </div>
+
+    <div class="good">
+      <b>一句话验证结论（✅ 通过）</b><br>
+      点击「creative 电影墙」按钮后，上一张缩小左移带角度退场、下一张放大右移带角度进场，效果符合电影选片墙要求。
+    </div>
+
+    <!-- ===== 任务二：12° 与 20° 两块全宽演示，上下都能看到 ===== -->
+    <div class="demo-box">
+      <div class="demo-title">🎬 creative 电影墙 · ±12° 与 ±20° 上下对照（两个轮播同步翻同一张）</div>
+      <div class="demo-sub">上面是 AI 原配置的 ±12°，下面是我追问后改成的 ±20°。两个轮播做了联动：拖任意一个，另一个立刻跟到同一张，所以能拿同一张图直接比较倾斜角——下面那张斜得更狠。</div>
+
+      <div class="run-panel wall-panel">
+        <h4>① AI 原配置：prev / next 都是 ±12°</h4>
+        <div class="sub">rotate: [0, 0, -12] 与 [0, 0, 12]</div>
+        <div class="swiper wall" id="demoC">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f2b5b,#1d5bbf)"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站" onerror="this.style.display='none'"><div class="mtxt">天宫空间站</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#12507a,#2b8fb3)"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组" onerror="this.style.display='none'"><div class="mtxt">复兴号动车组</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#4c2b8a,#7c4ddb)"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机" onerror="this.style.display='none'"><div class="mtxt">C919 大飞机</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#8a4b12,#e8890c)"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号" onerror="this.style.display='none'"><div class="mtxt">奋斗者号</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0b2545,#1b4f8a)"><img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号" onerror="this.style.display='none'"><div class="mtxt">爱达·魔都号</div></div>
+          </div>
+          <div class="swiper-pagination" id="demoCPag"></div>
+        </div>
+        <div class="deg-tip">上一张退场时倾斜 12°（比较平，接近正着走）</div>
+      </div>
+
+      <div class="run-panel wall-panel2">
+        <h4>② 追问后改的：prev / next 都是 ±20°</h4>
+        <div class="sub">rotate: [0, 0, -20] 与 [0, 0, 20]</div>
+        <div class="swiper wall" id="demoD">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0f2b5b,#1d5bbf)"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站" onerror="this.style.display='none'"><div class="mtxt">天宫空间站</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#12507a,#2b8fb3)"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组" onerror="this.style.display='none'"><div class="mtxt">复兴号动车组</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#4c2b8a,#7c4ddb)"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机" onerror="this.style.display='none'"><div class="mtxt">C919 大飞机</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#8a4b12,#e8890c)"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号" onerror="this.style.display='none'"><div class="mtxt">奋斗者号</div></div>
+            <div class="swiper-slide" style="background:linear-gradient(135deg,#0b2545,#1b4f8a)"><img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号" onerror="this.style.display='none'"><div class="mtxt">爱达·魔都号</div></div>
+          </div>
+          <div class="swiper-pagination" id="demoDPag"></div>
+        </div>
+        <div class="deg-tip" style="color:#b45309;background:#fff7ed">上一张退场时倾斜 20°（明显更斜，立体感更强）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ 任务三 ══════════════ -->
+  <div class="card">
+    <span class="tag">任务三 · 综合创作 + 技术答辩 ⭐⭐⭐</span>
+    <h2>新增爱达·魔都号 + 自选超纲能力 keyboard</h2>
+
+    <div class="q">
+      <div class="who">我的提问（keyboard）</div>
+      给 Swiper11 轮播加一个 keyboard 键盘控制功能，用户按键盘左右方向键可以切换幻灯片，应该怎么写？顺便提醒我需要注意什么。
+    </div>
+
+    <div class="a">
+      <div class="who">AI 回答</div>
+      在初始化配置根级加上：
+<pre>keyboard: {
+  enabled: true,
+  onlyInViewport: true
+}</pre>
+      <code>enabled:true</code> 开启键盘方向键控制；<code>onlyInViewport:true</code> 表示只有轮播处于视口可见范围才响应按键，避免页面其他区域误触。注意需要先点击轮播区域获得焦点，按键才会生效，这是浏览器焦点机制。
+    </div>
+
+    <div class="good">
+      <b>我做的修正</b><br>
+      AI 最初只给了一段单独带 keyboard 的初始化代码。但本页效果切换采用"destroy + new 重建"，直接替换会导致切换效果后键盘失效。因此我把 keyboard 配置<b>同时写进初始化和按钮重建两处</b>，保证切换任意效果后键盘仍可用。
+    </div>
+
+    <div class="q">
+      <div class="who">我的提问（第六件展品）</div>
+      为光影展添加第六件展品：爱达·魔都号（首艘国产大型邮轮，2024 年 1 月首航），slide 结构要完整，图片用 16:9 横版。
+    </div>
+
+    <div class="a">
+      <div class="who">最终 slide 结构（图片 ad_magic_city.jpg）</div>
+<pre>&lt;div class="swiper-slide"&gt;
+  &lt;img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号"&gt;
+  &lt;div class="wy-cap"&gt;
+    &lt;h3&gt;爱达·魔都号&lt;/h3&gt;
+    &lt;p&gt;2024 年 1 月首航 · 首艘国产大型邮轮&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      参数：总吨位 13.55 万吨，总长 323.6 米，2125 间客舱，最多载客 5246 人，母港上海吴淞口国际邮轮港。
+    </div>
+
+    <div class="good">
+      <b>一句话验证结论（✅ 通过）</b><br>
+      爱达·魔都号作为第六张幻灯片正常显示；页面点击后按 ← → 可切换幻灯片，切换七种效果后键盘控制仍然有效。
+    </div>
+
+    <!-- ===== 任务三 keyboard 实机演示 ===== -->
+    <div class="demo-box">
+      <div class="demo-title">⌨️ keyboard 键盘控制实机演示</div>
+      <div class="demo-sub">先用鼠标点一下下面这个轮播（让它获得焦点），再按键盘 ← → 试试，下面的"当前第几张"会跟着变。</div>
+      <div class="swiper kb" id="demoKb" tabindex="0">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" style="background:linear-gradient(135deg,#0f2b5b,#1d5bbf)"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站" onerror="this.style.display='none'"><div class="mtxt">天宫空间站 · 按 ← → 翻页</div></div>
+          <div class="swiper-slide" style="background:linear-gradient(135deg,#12507a,#2b8fb3)"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组" onerror="this.style.display='none'"><div class="mtxt">复兴号动车组 · 按 ← → 翻页</div></div>
+          <div class="swiper-slide" style="background:linear-gradient(135deg,#4c2b8a,#7c4ddb)"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机" onerror="this.style.display='none'"><div class="mtxt">C919 大飞机 · 按 ← → 翻页</div></div>
+          <div class="swiper-slide" style="background:linear-gradient(135deg,#8a4b12,#e8890c)"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号" onerror="this.style.display='none'"><div class="mtxt">奋斗者号 · 按 ← → 翻页</div></div>
+          <div class="swiper-slide" style="background:linear-gradient(135deg,#0b2545,#1b4f8a)"><img src="swiper-imgs/ad_magic_city.jpg" alt="爱达·魔都号" onerror="this.style.display='none'"><div class="mtxt">爱达·魔都号 · 按 ← → 翻页</div></div>
+        </div>
+        <div class="swiper-pagination" id="demoKbPag"></div>
+      </div>
+      <div class="kb-tip" style="max-width:720px;margin:10px auto 0;font-size:13px;color:#0f2b5b">当前显示：第 <b id="kbNow" style="color:#b45309">1</b> 张 / 共 <b>5</b> 张　（<span id="kbHint">键盘还没按过</span>）</div>
+    </div>
+  </div>
+
+  <div class="back"><a href="swiper-task.html">← 返回作品页面</a></div>
+  <footer>AI 协作记录存档 · 高级网页设计 · 2026-2027-1</footer>
+</div>
+
+<script>
+/* ---------- CDN 检测 ---------- */
+if (typeof Swiper === 'undefined') {
+  document.getElementById('cdnWarn').style.display = 'block';
+}
+
+/* ============================================================
+   任务一 · 演示 A：完全按「第 1 轮 AI 代码」跑
+   ============================================================ */
+var demoA = new Swiper('#demoA', {
+  loop: true,
+  speed: 600,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true          // ← 鼠标移上去就停
+  },
+  pagination: {
+    el: '#demoA .swiper-pagination',
+    clickable: true,
+    bulletClass: 'fxc_bullet',       // ← 类名被换掉，默认圆点样式失效
+    bulletActiveClass: 'fxc_bullet_active'
+  }
+});
+
+/* ============================================================
+   任务一 · 演示 B：按「第 2 轮修正后代码」跑
+   ============================================================ */
+var demoB = new Swiper('#demoB', {
+  loop: true,
+  effect: 'cube',                    // ← 补上 3D 立方体
+  speed: 800,
+  autoplay: {
+    delay: 3200,                     // ← 3.2 秒
+    disableOnInteraction: false
+  },
+  pagination: {
+    el: '#demoBPag',
+    clickable: true
+  }
+});
+
+/* 实时计数器：读 Swiper 内置的 autoplay.timeLeft */
+function bindCounter(swiper, delay, cntEl, remEl, barEl){
+  var count = 0;
+  swiper.on('slideChange', function(){
+    count++;
+    cntEl.textContent = count;
+  });
+  setInterval(function(){
+    var left = (swiper.autoplay && typeof swiper.autoplay.timeLeft === 'number')
+             ? Math.max(0, swiper.autoplay.timeLeft) : delay;
+    remEl.textContent = (left / 1000).toFixed(1);
+    var pct = (1 - left / delay) * 100;
+    barEl.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  }, 100);
+}
+bindCounter(demoA, 3000,
+  document.getElementById('cntA'),
+  document.getElementById('remA'),
+  document.getElementById('barA'));
+bindCounter(demoB, 3200,
+  document.getElementById('cntB'),
+  document.getElementById('remB'),
+  document.getElementById('barB'));
+
+/* ============================================================
+   任务二 · creative：±12° 与 ±20° 两个独立轮播，联动同步
+   ============================================================ */
+function makeCreative(elId, pagId, deg){
+  return new Swiper(elId, {
+    loop: true,
+    effect: 'creative',                      // 真·第 7 种效果
+    speed: 700,
+    autoplay: { delay: 2600, disableOnInteraction: false },
+    pagination: { el: pagId, clickable: true },
+    creativeEffect: {
+      prev: {
+        translate: ['-80%', 0, -250],
+        scale: 0.7,
+        rotate: [0, 0, -deg],
+        opacity: 0.6
+      },
+      next: {
+        translate: ['80%', 0, -250],
+        scale: 1.15,
+        rotate: [0, 0, deg],
+        opacity: 0.85
+      }
+    }
+  });
+}
+
+var demoC = makeCreative('#demoC', '#demoCPag', 12);   // 上：AI 原配置
+var demoD = makeCreative('#demoD', '#demoDPag', 20);   // 下：追问后改的
+
+/* 联动：拖任意一个，另一个立刻跳到同一张，保证同图对比 */
+var syncLock = false;
+function linkSlides(a, b){
+  a.on('slideChange', function(){
+    if (syncLock) return;
+    syncLock = true;
+    b.slideToLoop(a.realIndex, 0, false);
+    setTimeout(function(){ syncLock = false; }, 40);
+  });
+}
+linkSlides(demoC, demoD);
+linkSlides(demoD, demoC);
+
+/* ============================================================
+   任务三 · keyboard 键盘控制演示
+   ============================================================ */
+var demoKb = new Swiper('#demoKb', {
+  loop: true,
+  speed: 500,
+  keyboard: {
+    enabled: true,
+    onlyInViewport: true
+  },
+  pagination: { el: '#demoKbPag', clickable: true }
+});
+
+var kbNow = document.getElementById('kbNow');
+var kbHint = document.getElementById('kbHint');
+
+demoKb.on('slideChange', function(){
+  kbNow.textContent = demoKb.realIndex + 1;
+  kbHint.textContent = '已翻到第 ' + (demoKb.realIndex + 1) + ' 张（键盘/点击都算）';
+  kbHint.style.color = '#166534';
+});
+kbNow.textContent = demoKb.realIndex + 1;
+</script>
+</body>
+</html>

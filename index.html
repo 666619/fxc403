@@ -186,7 +186,7 @@
             margin-bottom: 18px;
         }
 
-        .course-card:not(.is-coming):hover {
+        .course-card:hover {
             border-color: var(--coral);
             transform: translateY(-5px);
         }
@@ -227,26 +227,6 @@
 
         .course-link:hover::after {
             transform: translateX(5px);
-        }
-
-        .is-coming {
-            background: transparent;
-            box-shadow: none;
-        }
-
-        .is-coming .course-number {
-            color: var(--muted);
-        }
-
-        .status {
-            border: 1px solid var(--line);
-            color: var(--muted);
-            display: inline-block;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            margin-top: auto;
-            padding: 4px 9px;
-            width: fit-content;
         }
 
         .fxc_swiper-summary {
@@ -382,7 +362,7 @@
             <section aria-labelledby="directory-title">
                 <div class="directory-heading">
                     <h2 id="directory-title">课堂目录</h2>
-                    <span>已收录 76 个网页 · 1 项待添加</span>
+                    <span>已收录 76 个网页</span>
                 </div>
 
                 <div class="fxc_section">
@@ -403,13 +383,6 @@
                             <h3>HTML 基础练习二</h3>
                             <p>同一系列的第二份标签练习，可对照两份写法差异。</p>
                             <a class="course-link" href="./html_basic_css">打开课堂实践</a>
-                        </article>
-
-                        <article class="course-card is-coming">
-                            <span class="course-number">03</span>
-                            <h3>自我介绍网页</h3>
-                            <p>个人信息与兴趣展示页面，将在后续课堂实践中加入。</p>
-                            <span class="status">后续添加</span>
                         </article>
 
                         <article class="course-card">
@@ -546,7 +519,7 @@
                 <div class="fxc_section">
                     <div class="directory-heading">
                         <h2 id="fxc_map_mix">综合页面与图标库示例</h2>
-                        <span>18 – 24</span>
+                        <span>18 – 26</span>
                     </div>
                     <div class="course-grid">
                         <article class="course-card">
@@ -603,6 +576,13 @@
                             <h3>Swiper 课堂任务</h3>
                             <p>Swiper 轮播组件的课堂实践页面。</p>
                             <a class="course-link" href="./swiper-task.html">打开课堂实践</a>
+                        </article>
+
+                        <article class="course-card">
+                            <span class="course-number">26</span>
+                            <h3>AI 提示词记录</h3>
+                            <p>记录 Swiper 光影展的提问与修正过程，附正误对照演示。</p>
+                            <a class="course-link" href="./prompts.html">打开课堂实践</a>
                         </article>
                     </div>
                 </div>

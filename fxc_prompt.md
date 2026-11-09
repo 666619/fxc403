@@ -35,39 +35,6 @@
 
 ---
 
-
-## 2026-11-02 13:50:37 | DeepSeek-V4.1-Flash
-
-AGENTS.md 所有说明、检查条目统一简体中文；文件路径、HTML、CSS、JS 标识符保留英文。后续在这个项目里，生成文档、检查清单都遵守这条约定。
-
----
-
-## 2026-11-02 14:20:05 | DeepSeek-V4.1-Flash
-
-D:\桌面\6 代码包含个人信息，请给我新建一个html文件，显示tab选项卡，选项卡分别为国内新闻、省内新闻、国际新闻、最热新闻，国内新闻作为默认选项。就是、文件单独放在js文件夹中，外部引用，js部分tab选项卡可复用。实现代码中包含事件监听，清除所有选项卡的选中状态再设置当前元素的选中状态。
-
----
-
-## 2026-11-02 14:30:38 | DeepSeek-V4.1-Flash
-
-请给我新建一个html文件，显示tab选项卡，选项卡分别为沪涨、沪跌、深涨、深跌，沪涨作为默认选项。就是、文件单独放在js文件夹中，外部引用，js部分tab选项卡可复用。实现代码中包含事件监听，清除所有选项卡的选中状态再设置当前元素的选中状态。D:\桌面\6
-
----
-
-## 2026-11-02 14:35:42 | DeepSeek-V4.1-Flash
-
-创建技能skill：提交到github，将本项目 d:\0403\tab-market.html 提交commit并push到 https://github.com/666619/fengxichang.git ，使用已设置公钥。
-
----
-
-## 2026-11-02 14:50:14 | DeepSeek-V4.1-Flash
-
-创建技能skill：提交到github，将本项目提交commit并push到 https://github.com/666619/403fengxichang.git ，使用已设置公钥。
-
----
-
-
-
 ## 2026-11-08 20:33:18 | DeepSeek-V4.1-Flash
 
 帮我写一段 Swiper11 的初始化代码，选择器是 #wySw4，要开启循环，自动播放，带可以点击的圆点分页器。
@@ -81,6 +48,62 @@ D:\桌面\6 代码包含个人信息，请给我新建一个html文件，显示t
 ---
 
 ## 2026-11-08 20:36:40 | DeepSeek-V4.1-Flash
+
+创建技能skill：提交到github，将本项目提交commit并push到 https://github.com/666619/fxc403.git ，使用已设置公钥。
+
+---
+
+## 2026-11-09 13:52:10 | DeepSeek-V4.1-Flash
+
+在这份学生版页面代码上修改，生成完整代码：把 4 个轮播全部初始化好，要求 #wySw1 最小可拖动，#wySw2 加 loop、speed 600、圆点 #wyPag2 可点击、箭头 #wyNext2/#wyPrev2，#wySw3 加 loop、autoplay 2.6 秒、disableOnInteraction:false、圆点 #wyPag3，#wySw4 用 var swiper4，loop + speed 800 + autoplay 3.2 秒 + 圆点 #wyPag4 + 初始 cube，并且补全按钮点击事件，用 destroy + new 实现效果切换。
+产出：swiper-task.html
+
+---
+
+## 2026-11-09 14:02:35 | DeepSeek-V4.1-Flash
+
+想加上加分项（爱达魔都号 slide、creative 电影墙按钮）在这份基础上继续扩写。爱达·魔都号的图片名是 ad_magic_city.jpg，四个轮播都要追加这张 slide，slide 结构要完整，图片按 16:9 横版使用。
+产出：swiper-task.html（四个轮播各新增第六件展品「爱达·魔都号」）
+
+---
+
+## 2026-11-09 14:08:12 | DeepSeek-V4.1-Flash
+
+自选超纲 API：keyboard 键盘方向键左右控制翻页。注意页面里的效果切换是 destroy 后 new 重建，要保证切换任意效果后键盘控制依然有效。
+产出：swiper-task.html（keyboard: { enabled: true, onlyInViewport: true } 同时写入初始化和重建两处）
+
+---
+
+## 2026-11-09 14:12:48 | DeepSeek-V4.1-Flash
+
+新建 prompts.html，只保留提示词记录，答辩内容不用添加。任务一写两轮提示词 + 两轮 AI 回答 + 一句话验证结论；任务二写提问、追问与 AI 回答 + 用自己的话写 prev/next 含义；任务三写 keyboard 提问与修正 + 魔都号 slide 结构 + 验证结论。
+产出：prompts.html
+
+---
+
+## 2026-11-09 14:20:06 | DeepSeek-V4.1-Flash
+
+prompts.html 添加提示词前后变化效果演示，要能看到变化。如果两轮提示词，则两轮的演示都要跑起来，任务一的第 1 轮和第 2 轮各自独立运行，能直接对比出差别。
+产出：prompts.html（任务一双演示、任务二 ±12°/±20° 对照、任务三 keyboard 实机演示）
+
+---
+
+## 2026-11-09 14:28:40 | DeepSeek-V4.1-Flash
+
+任务一演示有问题，有图片 swiper-imgs 就用图片，不要只剩色块；任务二演示要分开，两个都要能看到，能看出差距。
+产出：prompts.html（全部改用 swiper-imgs 实景图，演示改为上下全宽排列）
+
+---
+
+## 2026-11-09 14:36:22 | DeepSeek-V4.1-Flash）
+
+任务一演示还是空白只有纯色块，任务二两个轮播只有一个能正常显示。重新调整：不要用两列并排，改成上下全宽，标题保证可见，图片加载失败也不能变成空白。
+产出：prompts.html（去 Grid、固定 720px 宽高、slide 内联渐变兜底、图片 onerror 兜底）
+
+---
+
+
+## 2026-11-09 | DeepSeek-V4.1-Flash
 
 创建技能skill：提交到github，将本项目提交commit并push到 https://github.com/666619/fxc403.git ，使用已设置公钥。
 
